@@ -1,0 +1,110 @@
+<!-- https://wireframe.cc/sj9k5e -->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MusicBrainz</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div id="application">
+        <h1></h1>
+
+        <div class="container">
+        
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="typeRecherche" value="artist" v-model="type">
+                <label class="form-check-label">Artiste</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="typeRecherche" value="recording" v-model="type">
+                <label class="form-check-label">Titre</label>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Recherche : </label>
+                <input type="text" class="form-control"  placeholder="Recherche" v-model="search" v-on:keyup.enter="searchAPI(type,search)">
+            </div>
+
+            <button class="btn btn-primary" v-on:click="searchAPI(type,search)">Rechercher</button>
+        
+            <ul>
+                <li v-for="artist in infoArtist">
+                    {{artist.name}} 
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: "#application",
+            data: {
+                loading: true,
+                errored: false,
+                errorText: '',
+                infoBrute: '',
+                infoArtist : '',
+
+                type: 'artist',
+                search: '',
+            },
+
+            methods: {
+
+                searchAPI(type,search) {
+                // Méthode qui permet d'effectuer une recherche
+                // params : type = type de recherche (artist ou recording); search = texte de la recherche
+                // return : résultat de la recherche
+
+                axios
+                    .get('http://musicbrainz.org/ws/2/' + type + '/?fmt=json&query=' + search.trim(), {
+                        proxy: {
+                            host:'http://www-cache.iutnc.univ-lorraine.fr/',
+                            port:3128
+                        }
+                    })
+                    .then(response => {
+                        this.infoBrute = response
+                        this.infoArtist = response.data.artists
+                        console.log(this.infoArtist)
+                    })
+                    .catch(error => {
+                        this.errored = true
+                        this.errorText = error
+                    })
+                    .finally(() => {
+                        //Cette méthode est appelée quand le callback d'une promise est éxécuté : resolve ou reject peu importe.
+                        // Cela évite de dupliquer le traitement dans le .then et dans le .catch
+                        this.loading = false
+                    })
+                    
+                },
+
+                afficherResultat(type){
+
+                }
+
+            },
+
+            computed: {
+
+            },
+
+            
+
+        })
+    </script>
+
+    <style>
+    </style>
+</body>
+
+</html>
