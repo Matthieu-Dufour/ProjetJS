@@ -50,3 +50,19 @@ thead{
     background-color: #a4d7b6;
     border : solid #a4d7b6 2px;
 }
+
+#jumbotitle{
+    position: relative;
+    z-index: 2;
+}
+
+.circle{
+    position: relative;
+    left:-10px;
+    top:50px;
+    
+    background-color: #a4d7b6;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+}

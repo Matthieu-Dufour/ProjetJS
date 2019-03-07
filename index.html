@@ -23,8 +23,9 @@
         <div id="searchJumbotron" class="jumbotron jumbotron-fluid">
             <div class="container">
 
-                <h1 class="display-6" style="margin-bottom: 50px;">
-                    Music Brainz
+                <h1 class="display-6 jumbotitle" style="margin-bottom: 50px;">
+                    <div class="circle"></div>
+                    <p id="jumbotitle">Music Brainz</p>
                 </h1>
                 <div class="d-flex justify-content-center">
                     <input id="searchBar" type="text" class="" placeholder="Recherche" v-model="textOfSearch"
@@ -41,7 +42,6 @@
                 </div>
             </div>
         </div>
-        <div class="container searchResult">
             <div class="content">
 
                 <div v-if="resultType == 'artist'">
@@ -59,7 +59,6 @@
                     </tablelistcdstubs>
                 </div>
 
-            </div>
         </div>
 
     </div>
