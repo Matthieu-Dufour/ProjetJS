@@ -5,11 +5,11 @@ Vue.component('tablelistartists', {
     template:
     `
     <div v-if="artistsdata != ''">
-        <table class="table table-striped">
+        <table id="mytable" class="table table-dark">
             <thead>
                 <tr>
                 <th scope="col">Nom</th>
-                <th scope="col">deux</th>
+                <th scope="col">Type</th>
                 <th scope="col">Score</th>
                 </tr>
             </thead>
@@ -33,7 +33,7 @@ Vue.component('tablelistrecordings', {
     template:
     `
     <div v-if="recordingsdata != ''">
-        <table class="table table-striped">
+        <table id="mytable" class="table table-dark">
             <thead>
                 <tr>
                 <th scope="col">Nom</th>
@@ -62,7 +62,7 @@ Vue.component('tablelistcdstubs', {
     template:
     `
     <div v-if="cdstubsdata != ''">
-        <table class="table table-striped">
+        <table id="mytable" class="table table-dark">
             <thead>
                 <tr>
                 <th scope="col">Nom</th>

@@ -14,37 +14,34 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
     <div id="application">
-        <div class="container">
-            <div class="topHeader">
+        <div id="searchJumbotron" class="jumbotron jumbotron-fluid">
+            <div class="container">
 
-                <h1>Music Brainz</h1>
-
-                <div class="searchForm">
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Recherche" v-model="textOfSearch"
-                                v-on:keyup.enter="searchAPI(typeOfSearch,textOfSearch)">
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-primary"
-                                v-on:click="searchAPI(typeOfSearch,textOfSearch)">Rechercher</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-check form-check-inline" v-for="info in infosRadioButton">
-                            <input class="form-check-input" type="radio" name="typeOfSearch" v-bind:value="info.value"
-                                v-model="typeOfSearch">
-                            <label class="form-check-label">{{ info.text }}</label>
-                        </div>
+                <h1 class="display-6" style="margin-bottom: 50px;">
+                    Music Brainz
+                </h1>
+                <div class="d-flex justify-content-center">
+                    <input id="searchBar" type="text" class="" placeholder="Recherche" v-model="textOfSearch"
+                        v-on:keyup.enter="searchAPI(typeOfSearch,textOfSearch)">
+                    <button id="searchButton" v-on:click="searchAPI(typeOfSearch,textOfSearch)"><img
+                            src="loupe.png"></button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="form-check form-check-inline searchTypeCheck" v-for="info in infosRadioButton">
+                        <input class="form-check-input searchRadio" type="radio" name="typeOfSearch" v-bind:value="info.value"
+                            v-model="typeOfSearch">
+                        <label class="form-check-label searchTypeLabel">{{ info.text }}</label>
                     </div>
                 </div>
-
             </div>
+        </div>
+        <div class="container searchResult">
             <div class="content">
 
                 <div v-if="resultType == 'artist'">
@@ -58,14 +55,15 @@
                 </div>
 
                 <div v-if="resultType == 'cdstub'">
-                        <tablelistcdstubs v-bind:cdstubsdata="resultSearch">
-                        </tablelistcdstubs>
+                    <tablelistcdstubs v-bind:cdstubsdata="resultSearch">
+                    </tablelistcdstubs>
                 </div>
 
             </div>
-
         </div>
+
     </div>
+
 
     <script src="script.js"></script>
     <script>
@@ -83,7 +81,7 @@
                 infosRadioButton: [
                     { value: 'artist', text: 'Artiste' },
                     { value: 'recording', text: 'Chanson' },
-                    { value: 'cdstub', text: 'Album'}
+                    { value: 'cdstub', text: 'Album' }
                 ],
                 typeOfSearch: 'artist',
                 textOfSearch: '',

@@ -1,0 +1,52 @@
+body{
+    background-color: #444B55;
+    font-family: 'Nunito', sans-serif;
+}
+
+.searchTypeLabel{
+    color: #FFF;
+}
+
+.searchTypeCheck{
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+#searchBar{
+    border-radius: 0;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    width: 300px;
+    margin-right: 10px;
+    
+    border-bottom: #FFF solid 1px;
+}
+
+#searchButton{
+    border-radius: 0;
+    border: none;
+    background-color: #0CFFAA;
+    color: #FFF;
+}
+
+#searchJumbotron{
+    padding-top: 20px;
+    background-color: #0CFFAA;
+    padding-bottom: 20px;
+    margin-bottom: 0;
+}
+
+.searchRadio{
+    background-color: rgba(0, 0, 0, 0);
+    border: solid 1px #FFF;
+}
+
+#mytable{
+    background-color: #444B55;
+    border:none;
+}
+
+thead{
+    background-color: #a4d7b6;
+    border : solid #a4d7b6 2px;
+}
