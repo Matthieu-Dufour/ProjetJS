@@ -1,6 +1,7 @@
 body{
     background-color: #444B55;
     font-family: 'Nunito', sans-serif;
+    color:white;
 }
 
 .searchTypeLabel{
@@ -25,13 +26,13 @@ body{
 #searchButton{
     border-radius: 0;
     border: none;
-    background-color: #0CFFAA;
+    background-color: #7BAB01;
     color: #FFF;
 }
 
 #searchJumbotron{
     padding-top: 20px;
-    background-color: #0CFFAA;
+    background-color: #7BAB01;
     padding-bottom: 20px;
     margin-bottom: 0;
 }
@@ -46,9 +47,9 @@ body{
     border:none;
 }
 
-thead{
-    background-color: #a4d7b6;
-    border : solid #a4d7b6 2px;
+#mytable thead{
+    background-color: #ACCC3B;
+    border : solid #ACCC3B 2px;
 }
 
 #jumbotitle{
@@ -61,8 +62,35 @@ thead{
     left:-10px;
     top:50px;
     
-    background-color: #a4d7b6;
+    background-color: #ACCC3B;
     border-radius: 50%;
     width: 55px;
     height: 55px;
+}
+
+#buttonShowArtist{
+    background-color: #7BAB01;
+}
+
+#artistName{
+    padding-top: 10px;
+    color: #FFF;
+}
+
+#stripArtistName {
+    background-color: #ACCC3B;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#albumsTable{
+    background-color: #444B55;
+    border:none;
+}
+
+#backButton{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: #7BAB01;
+    color: white;
 }
