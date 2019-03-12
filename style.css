@@ -1,3 +1,5 @@
+/* Style pour l'application music brainz */
+
 body{
     background-color: #444B55;
     font-family: 'Nunito', sans-serif;
@@ -19,15 +21,31 @@ body{
     background-color: rgba(0, 0, 0, 0);
     width: 300px;
     margin-right: 10px;
-    
+    color: white;
     border-bottom: #FFF solid 1px;
 }
+
+#searchBar::placeholder{
+
+    color: #FFF;
+}
+
+#searchBar:focus{
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
 
 #searchButton{
     border-radius: 0;
     border: none;
     background-color: #7BAB01;
     color: #FFF;
+}
+
+#searchButton:focus{
+    outline: none;
 }
 
 #searchJumbotron{
@@ -94,3 +112,77 @@ body{
     background-color: #7BAB01;
     color: white;
 }
+
+tbody tr{
+    cursor: pointer;
+}
+
+
+#nomArtistAlbumPage{
+    color: #eeeeee;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#notClickable{
+    cursor: default;
+}
+
+/* Spinner */
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+  .lds-ellipsis div {
+    position: absolute;
+    top: 27px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #dfc;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds-ellipsis div:nth-child(1) {
+    left: 6px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 6px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 26px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 45px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(19px, 0);
+    }
+  }
+  

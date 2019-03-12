@@ -1,11 +1,8 @@
 <!-- POUR LE 14 MARS -->
 
-<!-- https://musicbrainz.org/ws/2/artist/ + {{ artist.id }} +/?fmt=json&inc=release-groups -->
+<!-- Wireframe pour la recherche : https://wireframe.cc/sj9k5e -->
+<!-- Wireframe pour l'affichage d'un artiste : https://wireframe.cc/1gwQxH -->
 
-
-<!-- https://wireframe.cc/sj9k5e -->
-<!-- https://wireframe.cc/1gwQxH -->
-<!-- Pour les covers des albums : https://musicbrainz.org/doc/Cover_Art_Archive/API -->
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -24,7 +21,6 @@
     <div id="application">
         <div id="searchJumbotron" class="jumbotron jumbotron-fluid">
             <div class="container">
-
                 <h1 class="display-6 jumbotitle" style="margin-bottom: 50px;">
                     <div class="circle"></div>
                     <p id="jumbotitle">Music Brainz</p>
@@ -37,62 +33,79 @@
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="form-check form-check-inline searchTypeCheck" v-for="info in infosRadioButton">
-                        <input class="form-check-input searchRadio" type="radio" name="typeOfSearch" v-bind:value="info.value"
-                            v-model="typeOfSearch">
+                        <input class="form-check-input searchRadio" type="radio" name="typeOfSearch"
+                            v-bind:value="info.value" v-model="typeOfSearch">
                         <label class="form-check-label searchTypeLabel">{{ info.text }}</label>
                     </div>
                 </div>
             </div>
         </div>
-            <div class="content">
+        <div class="content">
+            <section v-if="errored">
+                <p>We're sorry, we are not able to retrieve this information at the moment, please try later.</p>
+                <p>Code d'erreur : <br> {{errorText}}</p>
+            </section>
 
-                <div v-if="resultType == 'artist'">
-                    <tablelistartists v-bind:artistsdata="resultSearch" v-on:showartistevent="showArtist">
-                    </tablelistartists>
-                </div>
+            <section v-else>
+                
+                    <div class="d-flex justify-content-center" v-if="loading"> <spinner > </spinner> </div>
 
-                <div v-if="resultType == 'recording'">
-                    <tablelistrecordings v-bind:recordingsdata="resultSearch">
-                    </tablelistrecordings>
-                </div>
+                    <!-- Affichage d'une recherche par artiste-->
+                    <div v-if="resultType == 'artist'">
+                        <tablelistartists v-bind:artistsdata="resultSearch" v-on:showartistevent="showArtist">
+                        </tablelistartists>
+                    </div>
 
-                <div v-if="resultType == 'release'">
-                    <tablelistrealeases v-bind:releasesdata="resultSearch" v-on:showalbumevent="showAlbum">
-                    </tablelistrealeases>
-                </div>
+                    <!-- Affichage d'une recherche par chanson-->
+                    <div v-if="resultType == 'recording'">
+                        <tablelistrecordings v-bind:recordingsdata="resultSearch" v-on:showartistevent="showArtist"
+                            v-on:showalbumevent="showAlbum">
+                        </tablelistrecordings>
+                    </div>
 
-                <div v-if="resultType == 'artistpage' ">
-                    <tablelistalbums v-bind:artistinfo="artistAlbums" v-on:backtosearchevent="backToSearch" v-on:showalbumevent="showAlbum">
-                    </tablelistalbums>
-                </div>
+                    <!-- Affichage d'une recherche par album-->
+                    <div v-if="resultType == 'release'">
+                        <tablelistrealeases v-bind:releasesdata="resultSearch" v-on:showalbumevent="showAlbum">
+                        </tablelistrealeases>
+                    </div>
 
-                <div v-if="resultType == 'albumpage' ">
-                    <tablelistalbumrecordings v-bind:albuminfo="albumRecordings" v-on:backtosearchevent="backToSearch" v-on:showartistevent="showArtist">
-                    </tablelistalbumrecordings>
-                </div>
+                    <!-- Affichage de la page d'un artiste -->
+                    <div v-if="resultType == 'artistpage' ">
+                        <tablelistalbums v-bind:artistinfo="artistAlbums" v-on:backtosearchevent="backToSearch"
+                            v-on:showalbumevent="showAlbum">
+                        </tablelistalbums>
+                    </div>
+
+                    <!-- Affichage de la page d'un album -->
+                    <div v-if="resultType == 'albumpage' ">
+                        <tablelistalbumrecordings v-bind:albuminfo="albumRecordings" v-on:backtosearchevent="backToSearch"
+                            v-on:showartistevent="showArtist">
+                        </tablelistalbumrecordings>
+                    </div>
+
+            </section>
         </div>
 
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="components.js"></script>
     <script>
         var app = new Vue({
             el: "#application",
             data: {
-                loading: true,
+                loading: false,
                 errored: false,
                 errorText: '',
                 resultSearch: '',
                 resultType: '',
                 artistAlbums: '',
                 albumRecordings: '',
-
                 resultTypeHistory: '',
                 textOfSearchHistory: '',
 
 
-                //Boutons Radios
+                //Radio de recherche
                 infosRadioButton: [
                     { value: 'artist', text: 'Artiste' },
                     { value: 'recording', text: 'Chanson' },
@@ -102,40 +115,38 @@
                 typeOfSearch: 'artist',
                 textOfSearch: '',
 
-
-
-
             },
 
             methods: {
-
                 searchAPI(typeOfSearch, textOfSearch) {
                     // Méthode qui permet d'effectuer une recherche
                     // params : type = type de recherche (artist ou recording); search = texte de la recherche
                     // return : résultat de la recherche
-
-                    axios
-                        .get('http://musicbrainz.org/ws/2/' + typeOfSearch + '/?fmt=json&query=' + textOfSearch.trim() +"&inc=artists", {
-                            proxy: {
-                                host: 'http://www-cache.iutnc.univ-lorraine.fr/',
-                                port: 3128
-                            }
-                        })
-                        .then(response => {
-                            this.textOfSearchHistory = textOfSearch
-                            this.resultType = typeOfSearch
-                            this.resultSearch = response['data'][typeOfSearch + 's']
-                            this.textOfSearch = ""
-                            console.log(this.resultSearch)
-                        })
-                        .catch(error => {
-                            this.errored = true
-                            this.errorText = error
-                        })
-                        .finally(() => {
-                            this.loading = false
-                        })
-
+                    
+                    if (textOfSearch.trim() != "") {
+                        this.loading = true
+                        axios
+                            .get('http://musicbrainz.org/ws/2/' + typeOfSearch + '/?fmt=json&query=' + textOfSearch.trim() + "&inc=artists", {
+                                proxy: {
+                                    host: 'http://www-cache.iutnc.univ-lorraine.fr/',
+                                    port: 3128
+                                }
+                            })
+                            .then(response => {
+                                this.textOfSearchHistory = textOfSearch
+                                this.resultType = typeOfSearch
+                                this.resultSearch = response['data'][typeOfSearch + 's']
+                                this.textOfSearch = ""
+                                console.log(this.resultSearch)
+                            })
+                            .catch(error => {
+                                this.errored = true
+                                this.errorText = error
+                            })
+                            .finally(() => {
+                                this.loading = false
+                            })
+                    }
                 },
 
 
@@ -143,7 +154,7 @@
                     // Méthode qui permet d'afficher un album et ses titres
                     // params : albumId = id de l'album
                     // return : résultat de la requete
-
+                    this.loading = true
                     axios
                         .get('https://musicbrainz.org/ws/2/release/' + albumId + '/?fmt=json&inc=recordings artists', {
                             proxy: {
@@ -170,7 +181,7 @@
                     // Méthode qui permet d'afficher un artiste et ses albums
                     // params : artistId = id de l'artiste
                     // return : résultat de la requete
-
+                    this.loading = true
                     axios
                         .get('https://musicbrainz.org/ws/2/artist/' + artistId + '/?fmt=json&inc=releases', {
                             proxy: {
@@ -191,20 +202,6 @@
                             this.loading = false
                         })
                 },
-
-                
-
-                backToSearch(){
-                    // Méthode qui permet de retourner en arrière
-                    // params : none
-                    // return : Page de recherche precedente
-
-                    console.log(this.resultTypeHistory)
-                    console.log(this.textOfSearchHistory)
-                    this.searchAPI(this.resultTypeHistory, this.textOfSearchHistory)
-                },
-
-
 
             },
 
