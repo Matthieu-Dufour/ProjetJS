@@ -1,21 +1,21 @@
 /* Style pour l'application music brainz */
 
-body{
+body {
     background-color: #444B55;
     font-family: 'Nunito', sans-serif;
-    color:white;
+    color: white;
 }
 
-.searchTypeLabel{
+.searchTypeLabel {
     color: #FFF;
 }
 
-.searchTypeCheck{
+.searchTypeCheck {
     margin-top: 10px;
     margin-bottom: 0;
 }
 
-#searchBar{
+#searchBar {
     border-radius: 0;
     border: none;
     background-color: rgba(0, 0, 0, 0);
@@ -25,72 +25,69 @@ body{
     border-bottom: #FFF solid 1px;
 }
 
-#searchBar::placeholder{
-
+#searchBar::placeholder {
     color: #FFF;
 }
 
-#searchBar:focus{
+#searchBar:focus {
     border: none;
     box-shadow: none;
     outline: none;
 }
 
-
-#searchButton{
+#searchButton {
     border-radius: 0;
     border: none;
     background-color: #7BAB01;
     color: #FFF;
 }
 
-#searchButton:focus{
+#searchButton:focus {
     outline: none;
 }
 
-#searchJumbotron{
+#searchJumbotron {
     padding-top: 20px;
     background-color: #7BAB01;
     padding-bottom: 20px;
     margin-bottom: 0;
 }
 
-.searchRadio{
+.searchRadio {
     background-color: rgba(0, 0, 0, 0);
     border: solid 1px #FFF;
 }
 
-#mytable{
+#mytable {
     background-color: #444B55;
-    border:none;
+    border: none;
 }
 
-#mytable thead{
+#mytable thead {
     background-color: #ACCC3B;
-    border : solid #ACCC3B 2px;
+    border: solid #ACCC3B 2px;
 }
 
-#jumbotitle{
+#jumbotitle {
     position: relative;
     z-index: 2;
 }
 
-.circle{
+.circle {
     position: relative;
-    left:-10px;
-    top:50px;
-    
+    left: -10px;
+    top: 50px;
     background-color: #ACCC3B;
     border-radius: 50%;
     width: 55px;
     height: 55px;
 }
 
-#buttonShowArtist{
+#buttonShowArtist {
     background-color: #7BAB01;
 }
 
-#artistName{
+#artistName {
     padding-top: 10px;
     color: #FFF;
 }
@@ -101,88 +98,75 @@ body{
     margin-bottom: 20px;
 }
 
-#albumsTable{
+#albumsTable {
     background-color: #444B55;
-    border:none;
+    border: none;
 }
 
-#backButton{
+#backButton {
+    border-radius: 0;
     margin-top: 10px;
     margin-bottom: 20px;
     background-color: #7BAB01;
     color: white;
+    outline: none;
+    border: none;
 }
 
-tbody tr{
+tbody tr {
     cursor: pointer;
 }
 
-
-#nomArtistAlbumPage{
+#nomArtistAlbumPage {
     color: #eeeeee;
     cursor: pointer;
     text-decoration: underline;
 }
 
-#notClickable{
+#notClickable {
     cursor: default;
 }
 
 /* Spinner */
 
-.lds-ellipsis {
+.lds-facebook {
     display: inline-block;
     position: relative;
     width: 64px;
     height: 64px;
-  }
-  .lds-ellipsis div {
+}
+
+.lds-facebook div {
+    display: inline-block;
     position: absolute;
-    top: 27px;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: #dfc;
-    animation-timing-function: cubic-bezier(0, 1, 1, 0);
-  }
-  .lds-ellipsis div:nth-child(1) {
     left: 6px;
-    animation: lds-ellipsis1 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(2) {
+    width: 13px;
+    background: #fff;
+    animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.lds-facebook div:nth-child(1) {
     left: 6px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(3) {
+    animation-delay: -0.24s;
+}
+
+.lds-facebook div:nth-child(2) {
     left: 26px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(4) {
+    animation-delay: -0.12s;
+}
+
+.lds-facebook div:nth-child(3) {
     left: 45px;
-    animation: lds-ellipsis3 0.6s infinite;
-  }
-  @keyframes lds-ellipsis1 {
+    animation-delay: 0;
+}
+
+@keyframes lds-facebook {
     0% {
-      transform: scale(0);
+        top: 6px;
+        height: 51px;
     }
-    100% {
-      transform: scale(1);
+    50%, 100% {
+        top: 19px;
+        height: 26px;
     }
-  }
-  @keyframes lds-ellipsis3 {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(0);
-    }
-  }
-  @keyframes lds-ellipsis2 {
-    0% {
-      transform: translate(0, 0);
-    }
-    100% {
-      transform: translate(19px, 0);
-    }
-  }
-  
+}

@@ -3,15 +3,15 @@
 // Component du spinner de chargement
 Vue.component('spinner', {
     template:
-    `
-        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        `
+        <div class="lds-facebook"><div></div><div></div><div></div></div>
     `
 })
 
 // Component qui génère la table pour afficher les artistes
 Vue.component('tablelistartists', {
     template:
-    `
+        `
     <div v-if="artistsdata != ''">
 
         <table id="mytable" class="table table-hover table-dark">
@@ -52,6 +52,7 @@ Vue.component('tablelistalbums', {
     <div v-if="artistinfo != ''">
         <div id="stripArtistName" class="d-flex justify-content-center"><h2 id="artistName">{{ artistinfo.name }}</h2></div>
             <div class="container">
+            <button v-on:click="$emit('backevent')" id="backButton" class="btn">Retour</button>
             <h3>Albums de {{ artistinfo.name }} : </h3>
 
             <table id="albumsTable" class="table table-hover table-dark">
@@ -85,6 +86,7 @@ Vue.component('tablelistrecordings', {
     template:
         `
     <div v-if="recordingsdata != ''">
+    
         <table id="mytable" class="table table-hover table-dark">
             <thead>
                 <tr>
@@ -98,7 +100,7 @@ Vue.component('tablelistrecordings', {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="recording in recordingsdata" id="notClickable">
+                <tr v-for="recording in recordingsdata" id="notClickable" >
                     <td></td><td></td>
                     <td>{{ recording.title }}</td>
                     <td v-on:click="$emit('showartistevent', recording['artist-credit'][0].artist.id )"> <a id="nomArtistAlbumPage" >{{ recording['artist-credit'][0].artist.name }}</a></td>
@@ -124,7 +126,7 @@ Vue.component('tablelistalbumrecordings', {
             <div id="stripArtistName" class="d-flex justify-content-center"><h2 id="artistName">{{ albuminfo.title }}</h2></div>
             
             <div class="container">
-
+            <button v-on:click="$emit('backevent')" id="backButton" class="btn">Retour</button>
             <h3>Tracklist de l'album {{ albuminfo.title }} de <span id="nomArtistAlbumPage" v-on:click="$emit('showartistevent', albuminfo['artist-credit'][0].artist.id)"> {{ albuminfo['artist-credit'][0].artist.name }} </span></h3>
             
             <table id="albumsTable" class="table table-hover table-dark">
@@ -136,7 +138,7 @@ Vue.component('tablelistalbumrecordings', {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="record in albuminfo.media[0].tracks">
+                <tr v-for="record in albuminfo.media[0].tracks" id="notClickable">
                     <td>{{ record.number }}</td>
                     <td>{{ record.title }}</td>
                     <td>{{ record.length | convertTime }} min</td>
@@ -180,10 +182,10 @@ Vue.component('tablelistrealeases', {
                 </tr>
             </thead>
             <tbody>
-            <tr v-for="release in releasesdata" v-on:click="$emit('showalbumevent', release.id)">
+            <tr v-for="release in releasesdata" id="notClickable">
                     <td></td><td></td>
-                    <td>{{ release.title }}</td>
-                    <td> {{ release['artist-credit'][0].artist.name }}</td>
+                    <td v-on:click="$emit('showalbumevent', release.id )"><a id="nomArtistAlbumPage" >{{ release.title }}</td>
+                    <td v-on:click="$emit('showartistevent', release['artist-credit'][0].artist.id )"> <a id="nomArtistAlbumPage" >{{ release['artist-credit'][0].artist.name }}</a></td>
                     <td>{{ release.date }}</td>
                     <td>{{ release.score }}</td>
                     <td></td>

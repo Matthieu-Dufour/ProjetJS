@@ -41,47 +41,51 @@
             </div>
         </div>
         <div class="content">
+
             <section v-if="errored">
                 <p>We're sorry, we are not able to retrieve this information at the moment, please try later.</p>
                 <p>Code d'erreur : <br> {{errorText}}</p>
             </section>
 
             <section v-else>
-                
-                    <div class="d-flex justify-content-center" v-if="loading"> <spinner > </spinner> </div>
 
-                    <!-- Affichage d'une recherche par artiste-->
-                    <div v-if="resultType == 'artist'">
-                        <tablelistartists v-bind:artistsdata="resultSearch" v-on:showartistevent="showArtist">
-                        </tablelistartists>
-                    </div>
+                <div class="d-flex justify-content-center" v-if="loading" style="background-color: #ACCC3B">
+                    <spinner> </spinner>
+                </div>
 
-                    <!-- Affichage d'une recherche par chanson-->
-                    <div v-if="resultType == 'recording'">
-                        <tablelistrecordings v-bind:recordingsdata="resultSearch" v-on:showartistevent="showArtist"
-                            v-on:showalbumevent="showAlbum">
-                        </tablelistrecordings>
-                    </div>
+                <!-- Affichage d'une recherche par artiste-->
+                <div v-if="resultType == 'artist'">
+                    <tablelistartists v-bind:artistsdata="resultSearch" v-on:showartistevent="showArtist">
+                    </tablelistartists>
+                </div>
 
-                    <!-- Affichage d'une recherche par album-->
-                    <div v-if="resultType == 'release'">
-                        <tablelistrealeases v-bind:releasesdata="resultSearch" v-on:showalbumevent="showAlbum">
-                        </tablelistrealeases>
-                    </div>
+                <!-- Affichage d'une recherche par chanson-->
+                <div v-if="resultType == 'recording'">
+                    <tablelistrecordings v-bind:recordingsdata="resultSearch" v-on:showartistevent="showArtist"
+                        v-on:showalbumevent="showAlbum">
+                    </tablelistrecordings>
+                </div>
 
-                    <!-- Affichage de la page d'un artiste -->
-                    <div v-if="resultType == 'artistpage' ">
-                        <tablelistalbums v-bind:artistinfo="artistAlbums" v-on:backtosearchevent="backToSearch"
-                            v-on:showalbumevent="showAlbum">
-                        </tablelistalbums>
-                    </div>
+                <!-- Affichage d'une recherche par album-->
+                <div v-if="resultType == 'release'">
+                    <tablelistrealeases v-bind:releasesdata="resultSearch" v-on:showalbumevent="showAlbum"
+                        v-on:showartistevent="showArtist">
+                    </tablelistrealeases>
+                </div>
 
-                    <!-- Affichage de la page d'un album -->
-                    <div v-if="resultType == 'albumpage' ">
-                        <tablelistalbumrecordings v-bind:albuminfo="albumRecordings" v-on:backtosearchevent="backToSearch"
-                            v-on:showartistevent="showArtist">
-                        </tablelistalbumrecordings>
-                    </div>
+                <!-- Affichage de la page d'un artiste -->
+                <div v-if="resultType == 'artistpage' ">
+                    <tablelistalbums v-bind:artistinfo="artistAlbums" v-on:showalbumevent="showAlbum"
+                        v-on:backevent="back">
+                    </tablelistalbums>
+                </div>
+
+                <!-- Affichage de la page d'un album -->
+                <div v-if="resultType == 'albumpage' ">
+                    <tablelistalbumrecordings v-bind:albuminfo="albumRecordings" v-on:showartistevent="showArtist"
+                        v-on:backevent="back">
+                    </tablelistalbumrecordings>
+                </div>
 
             </section>
         </div>
@@ -101,8 +105,8 @@
                 resultType: '',
                 artistAlbums: '',
                 albumRecordings: '',
-                resultTypeHistory: '',
-                textOfSearchHistory: '',
+                typeOfSearchHistory: [],
+                textOfSearchHistory: [],
 
 
                 //Radio de recherche
@@ -122,7 +126,7 @@
                     // Méthode qui permet d'effectuer une recherche
                     // params : type = type de recherche (artist ou recording); search = texte de la recherche
                     // return : résultat de la recherche
-                    
+
                     if (textOfSearch.trim() != "") {
                         this.loading = true
                         axios
@@ -133,11 +137,11 @@
                                 }
                             })
                             .then(response => {
-                                this.textOfSearchHistory = textOfSearch
+                                this.textOfSearchHistory.push(textOfSearch)
+                                this.typeOfSearchHistory.push(typeOfSearch)
                                 this.resultType = typeOfSearch
                                 this.resultSearch = response['data'][typeOfSearch + 's']
                                 this.textOfSearch = ""
-                                console.log(this.resultSearch)
                             })
                             .catch(error => {
                                 this.errored = true
@@ -163,7 +167,8 @@
                             }
                         })
                         .then(response => {
-                            console.log(response)
+                            this.textOfSearchHistory.push(albumId)
+                            this.typeOfSearchHistory.push('albumpage')
                             this.resultTypeHistory = this.resultType
                             this.albumRecordings = response['data']
                             this.resultType = 'albumpage'
@@ -190,6 +195,8 @@
                             }
                         })
                         .then(response => {
+                            this.textOfSearchHistory.push(artistId)
+                            this.typeOfSearchHistory.push('artistpage')
                             this.resultTypeHistory = this.resultType
                             this.artistAlbums = response['data']
                             this.resultType = 'artistpage'
@@ -201,6 +208,33 @@
                         .finally(() => {
                             this.loading = false
                         })
+                },
+
+                back() {
+                    this.textOfSearchHistory.pop();
+                    this.typeOfSearchHistory.pop();
+
+                    if (this.textOfSearchHistory.length > 10) {
+                        this.textOfSearchHistory.shift();
+                    }
+                    if (this.typeOfSearchHistory.length > 10) {
+                        this.typeOfSearchHistory.shift();
+                    }
+
+                    if (this.typeOfSearchHistory[this.typeOfSearchHistory.length - 1] == 'artistpage') {
+                        this.showArtist(this.textOfSearchHistory[this.textOfSearchHistory.length - 1])
+                    }
+
+                    if (this.typeOfSearchHistory[this.typeOfSearchHistory.length - 1] == 'albumpage') {
+                        this.showAlbum(this.textOfSearchHistory[this.textOfSearchHistory.length - 1])
+                    }
+
+                    if (this.typeOfSearchHistory[this.typeOfSearchHistory.length - 1] == 'artist' || this.typeOfSearchHistory[this.typeOfSearchHistory.length - 1] == 'recording' || this.typeOfSearchHistory[this.typeOfSearchHistory.length - 1] == 'release') {
+                        this.searchAPI(this.typeOfSearchHistory[this.typeOfSearchHistory.length - 1], this.textOfSearchHistory[this.textOfSearchHistory.length - 1])
+                    }
+
+                    this.textOfSearchHistory.pop();
+                    this.typeOfSearchHistory.pop();
                 },
 
             },
